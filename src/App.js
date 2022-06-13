@@ -1,9 +1,10 @@
-
+import { useState } from 'react';
+import Table from './components/Table'
 function App() {
+  const [theme, setTheme] = useState("dark")
   return (
-    <div className="App">
-
-
+    <div>
+      <Table />
     </div>
   );
 }
