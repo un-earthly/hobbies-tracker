@@ -21,6 +21,9 @@ export default function Table() {
         setDataArray([...existedData])
 
     }
+    const sendRowData = () => {
+        axios.post("https://serene-brook-99567.herokuapp.com/mail", dataArray)
+    }
     const handleDelete = id => {
         const url = `https://jsonplaceholder.typicode.com/users/${id}`
         axios.delete(url).then(res => console.log(res.data))
@@ -69,6 +72,7 @@ export default function Table() {
                     }
                 </tbody>
             </table>
+            <button onClick={sendRowData} className='btn btn-dark'>Send Row Data</button>
         </div>
     )
 }
