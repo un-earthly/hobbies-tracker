@@ -1,6 +1,7 @@
 import { PlusIcon } from '@heroicons/react/solid';
 import { useForm } from "react-hook-form";
 import Table from './components/Table'
+
 function App() {
   const { handleSubmit, register, formState: { errors } } = useForm();
   const onSubmit = data => console.log(data);

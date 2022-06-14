@@ -1,14 +1,25 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { TrashIcon, PencilIcon } from '@heroicons/react/solid'
 import axios from 'axios'
 import { useQuery } from 'react-query'
 export default function Table() {
-    // const [data, setData] = useState([])
-    // useEffect(() => {
-    const { isLoading, error, data, refetch } = useQuery('userData', () => axios.get('http://jsonplaceholder.typicode.com/users').then(res => res.data))
+
+    const [dataArray, setDataArray] = useState([])
+    const { isLoading, data } = useQuery('userData', () => axios.get('http://jsonplaceholder.typicode.com/users').then(res => res.data))
     const getrowData = id => {
         const url = `https://jsonplaceholder.typicode.com/users/${id}`
-        axios.get(url).then(res => console.log(res.data))
+        axios.get(url).then(res => {
+            const existedData = dataArray.find(data => data.id === id)
+            if (!existedData) {
+                setDataArray([...dataArray, res.data])
+            }
+        })
+
+    }
+    const removeRowData = id => {
+        const existedData = dataArray.filter(data => data.id !== id)
+        setDataArray([...existedData])
+
     }
     const handleDelete = id => {
         const url = `https://jsonplaceholder.typicode.com/users/${id}`
@@ -21,7 +32,12 @@ export default function Table() {
             <table class="table w-full">
                 <thead>
                     <tr>
-                        <th>Select row</th>
+                        <th>
+                            <div class="indicator">
+                                <span class="indicator-item badge badge-primary">{dataArray.length}</span>
+                                <p className='p-3'>Selected Rows</p>
+                            </div>
+                        </th>
                         <th>id</th>
                         <th>Name</th>
                         <th>phone</th>
@@ -36,7 +52,7 @@ export default function Table() {
                         isLoading ? <p>Loading</p> :
                             data.map(d => (
                                 <tr key={d.id}>
-                                    <td><input type="checkbox" class="checkbox" onClick={() => getrowData(d.id)} /></td>
+                                    <td><input type="checkbox" class="checkbox" onClick={e => e.target.checked ? getrowData(d.id) : removeRowData(d.id)} /></td>
                                     <td>{d.id}</td>
                                     <td>name</td>
                                     <td>{d.phone}</td>
