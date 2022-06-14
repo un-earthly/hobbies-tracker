@@ -72,7 +72,7 @@ export default function Table() {
                     }
                 </tbody>
             </table>
-            <button onClick={sendRowData} className='btn btn-dark'>Send Row Data</button>
+            <button onClick={sendRowData} className='btn btn-dark mx-auto d-block w-3/4'>Send Row Data</button>
         </div>
     )
 }
