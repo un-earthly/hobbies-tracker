@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { TrashIcon, PencilIcon } from '@heroicons/react/solid'
 import axios from 'axios'
+import { toast } from 'react-toastify';
 export default function Table() {
 
     const [data, setData] = useState([])
@@ -16,22 +17,24 @@ export default function Table() {
     }, [sortByAscending, data])
 
     const getrowData = id => {
-        const url = `https://serene-brook-99567.herokuapp.com/hobby/${id}`
-        axios.get(url).then(res => {
-            const existedData = dataArray.find(data => data.id === id)
-            if (!existedData) {
-                setDataArray([...dataArray, res.data])
-            }
-        })
+        const url = `http://localhost/hobby/${id}`
+        axios.get(url)
+            .then(res => {
+                const existedData = dataArray.find(data => data._id === id)
+                if (!existedData) {
+                    setDataArray([...dataArray, res.data])
+                }
+            })
 
     }
     const removeRowData = id => {
-        const existedData = dataArray.filter(data => data.id !== id)
+        const existedData = dataArray.filter(data => data._id !== id)
         setDataArray([...existedData])
 
     }
     const sendRowData = () => {
         axios.post("http://localhost/mail", dataArray)
+            .then(res => console.log(res.data))
     }
     const handleDelete = id => {
         const url = `http://localhost/hobby/${id}`
@@ -41,11 +44,11 @@ export default function Table() {
 
     return (
         <div class="overflow-x-auto">
-
-            <button onClick={() => setSortByAscending(!sortByAscending)} className='btn btn-dark mx-auto'>{sortByAscending ? "Ascending" : "Descending"}</button>
-            <button onClick={sendRowData} className='btn btn-dark mx-auto'>Send Row Data</button>
-            <button onClick={sendRowData} className='btn btn-dark mx-auto'>Send Row Data</button>
-
+            <div className='flex items-center justify-center space-x-4'>
+                <button onClick={() => setSortByAscending(!sortByAscending)} className='btn btn-dark block'>{sortByAscending ? "Ascending" : "Descending"}</button>
+                <button onClick={sendRowData} className='btn btn-dark block'>Send Row Data</button>
+                <button onClick={sendRowData} className='btn btn-dark block'>Send Row Data</button>
+            </div>
             <table class="table w-full">
                 <thead>
                     <tr>
@@ -69,7 +72,7 @@ export default function Table() {
                         isLoading ? <p>Loading</p> :
                             data.map(d => (
                                 <tr key={d._id}>
-                                    <td><input type="checkbox" class="checkbox" onClick={e => e.target.checked ? getrowData(d.id) : removeRowData(d.id)} /></td>
+                                    <td><input type="checkbox" class="checkbox" onClick={e => e.target.checked ? getrowData(d._id) : removeRowData(d._id)} /></td>
                                     <td>{d._id}</td>
                                     <td>{d.name}</td>
                                     <td>{d.phone}</td>

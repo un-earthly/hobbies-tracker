@@ -2,7 +2,8 @@ import { PlusIcon } from '@heroicons/react/solid';
 import axios from 'axios';
 import { useForm } from "react-hook-form";
 import Table from './components/Table'
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 function App() {
   const { handleSubmit, register, reset, formState: { errors } } = useForm();
   const onSubmit = data => {
@@ -79,6 +80,7 @@ function App() {
           </form>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 }
