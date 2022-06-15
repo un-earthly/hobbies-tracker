@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { TrashIcon, PencilIcon } from '@heroicons/react/solid'
 import axios from 'axios'
-import { toast } from 'react-toastify';
+import { useForm } from "react-hook-form";
 export default function Table() {
-
+    const { handleSubmit, register, formState: { errors } } = useForm();
     const [data, setData] = useState([])
     const [isLoading, setisLoading] = useState(true)
     const [sortByAscending, setSortByAscending] = useState(true)
     const [dataArray, setDataArray] = useState([])
+    const [id, setId] = useState("")
     useEffect(() => {
         axios.get(`http://localhost/hobby?latest=${sortByAscending}`)
             .then(res => {
@@ -41,7 +42,10 @@ export default function Table() {
         axios.delete(url).then(res => console.log(res.data))
 
     }
-
+    const onSubmit = data => {
+        axios.put(`http://localhost/hobby/${id}`, data)
+            .then(res => console.log(res))
+    };
     return (
         <div class="overflow-x-auto">
             <div className='flex items-center justify-center space-x-4'>
@@ -80,7 +84,7 @@ export default function Table() {
                                     <td>{d.hobbies}</td>
                                     <td>
 
-                                        <label for="addmore" ><PencilIcon className='hover:text-gray-500 duration-300' height={25} /></label>
+                                        <label for="modal" ><PencilIcon className='hover:text-gray-500 duration-300' height={25} onClick={() => setId(d._id)} /></label>
                                     </td>
 
                                     <td><TrashIcon className='hover:text-gray-500 duration-300' height={25} onClick={() => handleDelete(d._id)} /></td>
@@ -89,6 +93,71 @@ export default function Table() {
                     }
                 </tbody>
             </table>
+
+
+
+
+            {/* modal  */}
+
+
+            <input type="checkbox" id="modal" class="modal-toggle" />
+            <div class="modal">
+                <div class="modal-box pb-14 relative">
+                    <label for="modal" class="btn btn-sm btn-circle btn-error absolute right-2 top-2">✕</label>
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                        <h1 className='text-2xl text-center my-4'>Please Update Your Information {id}</h1>
+                        <div className='w-3/4 mx-auto space-y-3'>
+                            <div>
+                                <input
+                                    className='input w-full border-2 border-gray-300 focus:border-green-300 focus:outline-none'
+                                    placeholder="Please enter your Name"
+                                    {...register("name", {
+                                        required: "Please Enter Your Name"
+                                    })}
+                                />
+                                {errors.name && <p className='my-3 text-red-500'>{errors.name.message}</p>}
+                            </div>
+                            <div>
+                                <input
+                                    type="email"
+                                    className='input w-full border-2 border-gray-300 focus:border-green-300 focus:outline-none'
+                                    placeholder="Please enter your Email"
+                                    {...register("email", {
+                                        required: "Please enter a valid email",
+                                        pattern: {
+                                            value: /^[a-zA-Z0-9.! #$%&'*+/=? ^_`{|}~-]+@[a-zA-Z0-9-]+(?:\. [a-zA-Z0-9-]+)*$/
+                                        }
+                                    })}
+                                />
+                                {errors.email && <p className='my-3 text-red-500'>{errors.email.message}</p>}
+                            </div>
+                            <div>
+                                <input
+                                    className='input w-full border-2 border-gray-300 focus:border-green-300 focus:outline-none'
+                                    placeholder="Please enter Phone Number"
+                                    {...register("phone", {
+                                        required: "Please Enter Your Phone Number"
+                                    })}
+                                />
+                                {errors.phone && <p className='my-3 text-red-500'>{errors.phone.message}</p>}
+                            </div>
+                            <div>
+                                <input
+                                    className='input w-full border-2 border-gray-300 focus:border-green-300 focus:outline-none'
+                                    placeholder="Please enter your Hobbies"
+                                    {...register("hobbies", {
+                                        required: "Please Enter Your Hobbies"
+                                    })}
+                                />
+                                {errors.hobbies && <p className='my-3 text-red-500'>{errors.hobbies.message}</p>}
+                            </div>
+                            <button className='btn btn-outline btn-success w-full'>
+                                Save
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     )
 }

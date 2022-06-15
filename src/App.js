@@ -2,16 +2,12 @@ import { PlusIcon } from '@heroicons/react/solid';
 import axios from 'axios';
 import { useForm } from "react-hook-form";
 import Table from './components/Table'
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+
 function App() {
-  const { handleSubmit, register, reset, formState: { errors } } = useForm();
+  const { handleSubmit, register, formState: { errors } } = useForm();
   const onSubmit = data => {
     axios.post("https://serene-brook-99567.herokuapp.com/hobby", data)
-      .then(res => {
-        console.log(res)
-        reset()
-      })
+      .then(res => console.log(res))
   };
 
 
@@ -43,7 +39,7 @@ function App() {
                 <input
                   type="email"
                   className='input w-full border-2 border-gray-300 focus:border-green-300 focus:outline-none'
-                  placeholder="Please enter your name"
+                  placeholder="Please enter your email"
                   {...register("email", {
                     required: "Please enter a valid email",
                     pattern: {
@@ -56,7 +52,7 @@ function App() {
               <div>
                 <input
                   className='input w-full border-2 border-gray-300 focus:border-green-300 focus:outline-none'
-                  placeholder="Please enter your name"
+                  placeholder="Please enter your phone"
                   {...register("phone", {
                     required: "Please Enter Your Phone"
                   })}
@@ -66,7 +62,7 @@ function App() {
               <div>
                 <input
                   className='input w-full border-2 border-gray-300 focus:border-green-300 focus:outline-none'
-                  placeholder="Please enter your name"
+                  placeholder="Please enter your hobbies"
                   {...register("hobbies", {
                     required: "Please Enter Your Hobbies"
                   })}
@@ -80,7 +76,6 @@ function App() {
           </form>
         </div>
       </div>
-      <ToastContainer />
     </div>
   );
 }
