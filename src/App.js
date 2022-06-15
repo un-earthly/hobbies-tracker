@@ -1,10 +1,19 @@
 import { PlusIcon } from '@heroicons/react/solid';
+import axios from 'axios';
 import { useForm } from "react-hook-form";
 import Table from './components/Table'
 
 function App() {
-  const { handleSubmit, register, formState: { errors } } = useForm();
-  const onSubmit = data => console.log(data);
+  const { handleSubmit, register, reset, formState: { errors } } = useForm();
+  const onSubmit = data => {
+    axios.post("https://serene-brook-99567.herokuapp.com/hobby", data)
+      .then(res => {
+        console.log(res)
+        reset()
+      })
+  };
+
+
   return (
     <div>
       <Table />
