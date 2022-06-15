@@ -43,7 +43,8 @@ function App() {
                   {...register("email", {
                     required: "Please enter a valid email",
                     pattern: {
-                      value: /\S+@\S+\.\S+/
+                      value: /\S+@\S+\.\S+/,
+                      message: "Please enter a valid email",
                     }
                   })}
                 />
@@ -54,7 +55,11 @@ function App() {
                   className='input w-full border-2 border-gray-300 focus:border-green-300 focus:outline-none'
                   placeholder="Please enter your phone"
                   {...register("phone", {
-                    required: "Please Enter Your Phone"
+                    required: "Please Enter Your Phone",
+                    pattern: {
+                      value: /^\(?(\d{4})\)?[- ]?(\d{3})[- ]?(\d{4})$/,
+                      message: "please provide a phone number with 11 digits only"
+                    }
                   })}
                 />
                 {errors.phone && <p className='my-3 text-red-500'>{errors.phone.message}</p>}

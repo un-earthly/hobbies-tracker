@@ -51,7 +51,6 @@ export default function Table() {
             <div className='flex items-center justify-center space-x-4'>
                 <button onClick={() => setSortByAscending(!sortByAscending)} className='btn btn-dark block'>{sortByAscending ? "Ascending" : "Descending"}</button>
                 <button onClick={sendRowData} className='btn btn-dark block'>Send Row Data</button>
-                <button onClick={sendRowData} className='btn btn-dark block'>Send Row Data</button>
             </div>
             <table class="table w-full">
                 <thead>
@@ -121,11 +120,12 @@ export default function Table() {
                                 <input
                                     type="email"
                                     className='input w-full border-2 border-gray-300 focus:border-green-300 focus:outline-none'
-                                    placeholder="Please enter your Email"
+                                    placeholder="Please enter your email"
                                     {...register("email", {
                                         required: "Please enter a valid email",
                                         pattern: {
-                                            value: /^[a-zA-Z0-9.! #$%&'*+/=? ^_`{|}~-]+@[a-zA-Z0-9-]+(?:\. [a-zA-Z0-9-]+)*$/
+                                            value: /\S+@\S+\.\S+/,
+                                            message: "Please enter a valid email",
                                         }
                                     })}
                                 />
@@ -134,9 +134,13 @@ export default function Table() {
                             <div>
                                 <input
                                     className='input w-full border-2 border-gray-300 focus:border-green-300 focus:outline-none'
-                                    placeholder="Please enter Phone Number"
+                                    placeholder="Please enter your phone"
                                     {...register("phone", {
-                                        required: "Please Enter Your Phone Number"
+                                        required: "Please Enter Your Phone",
+                                        pattern: {
+                                            value: /^\(?(\d{4})\)?[- ]?(\d{3})[- ]?(\d{4})$/,
+                                            message: "please provide a phone number with 11 digits only"
+                                        }
                                     })}
                                 />
                                 {errors.phone && <p className='my-3 text-red-500'>{errors.phone.message}</p>}
