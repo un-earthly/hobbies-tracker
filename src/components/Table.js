@@ -10,7 +10,7 @@ export default function Table() {
     const [dataArray, setDataArray] = useState([])
     const [id, setId] = useState("")
     useEffect(() => {
-        axios.get(`http://localhost/hobby?latest=${sortByAscending}`)
+        axios.get(`https://serene-brook-99567.herokuapp.com/hobby?latest=${sortByAscending}`)
             .then(res => {
                 setData(res.data)
                 setisLoading(false)
@@ -18,7 +18,7 @@ export default function Table() {
     }, [sortByAscending, data])
 
     const getrowData = id => {
-        const url = `http://localhost/hobby/${id}`
+        const url = `https://serene-brook-99567.herokuapp.com/hobby/${id}`
         axios.get(url)
             .then(res => {
                 const existedData = dataArray.find(data => data._id === id)
@@ -34,21 +34,21 @@ export default function Table() {
 
     }
     const sendRowData = () => {
-        axios.post("http://localhost/mail", dataArray)
+        axios.post("https://serene-brook-99567.herokuapp.com/mail", dataArray)
             .then(res => console.log(res.data))
     }
     const handleDelete = id => {
-        const url = `http://localhost/hobby/${id}`
+        const url = `https://serene-brook-99567.herokuapp.com/hobby/${id}`
         axios.delete(url).then(res => console.log(res.data))
 
     }
     const onSubmit = data => {
-        axios.put(`http://localhost/hobby/${id}`, data)
+        axios.put(`https://serene-brook-99567.herokuapp.com/hobby/${id}`, data)
             .then(res => console.log(res))
     };
     return (
         <div class="overflow-x-auto">
-            <div className='flex items-center justify-center space-x-4'>
+            <div className='flex items-center justify-center space-x-4 my-5'>
                 <button onClick={() => setSortByAscending(!sortByAscending)} className='btn btn-dark block'>{sortByAscending ? "Ascending" : "Descending"}</button>
                 <button onClick={sendRowData} className='btn btn-dark block'>Send Row Data</button>
             </div>
