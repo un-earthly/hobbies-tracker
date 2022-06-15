@@ -4,10 +4,10 @@ import { useForm } from "react-hook-form";
 import Table from './components/Table'
 
 function App() {
-  const { handleSubmit, register, formState: { errors } } = useForm();
+  const { handleSubmit, register,reset, formState: { errors } } = useForm();
   const onSubmit = data => {
     axios.post("https://serene-brook-99567.herokuapp.com/hobby", data)
-      .then(res => console.log(res))
+      .then(res => reset())
   };
 
 

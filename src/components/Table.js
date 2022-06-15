@@ -3,7 +3,7 @@ import { TrashIcon, PencilIcon } from '@heroicons/react/solid'
 import axios from 'axios'
 import { useForm } from "react-hook-form";
 export default function Table() {
-    const { handleSubmit, register, formState: { errors } } = useForm();
+    const { handleSubmit, register, reset, formState: { errors } } = useForm();
     const [data, setData] = useState([])
     const [isLoading, setisLoading] = useState(true)
     const [sortByAscending, setSortByAscending] = useState(true)
@@ -44,7 +44,7 @@ export default function Table() {
     }
     const onSubmit = data => {
         axios.put(`https://serene-brook-99567.herokuapp.com/hobby/${id}`, data)
-            .then(res => console.log(res))
+            .then(res => reset())
     };
     return (
         <div class="overflow-x-auto">
